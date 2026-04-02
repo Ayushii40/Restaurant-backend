@@ -9,7 +9,9 @@ export const sendToken = (user, statusCode, message, res) => {
     expires: new Date(
       Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true, // Set httpOnly to true for security
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
   };
 
   res.status(statusCode).cookie("token", token, options).json({
@@ -63,6 +65,8 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
     .cookie("token", "", {
       expires: new Date(Date.now()),
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
     })
     .json({
       success: true,
